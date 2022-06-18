@@ -1,0 +1,11 @@
+apiVersion: v2
+name: example-application
+description: An example Helm chart for some application
+
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: example-library
+    version: 0.1.0
+    repository: file://../example-library

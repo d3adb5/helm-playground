@@ -1,0 +1,6 @@
+apiVersion: v2
+name: example-library
+description: An example Helm chart library written for fun
+
+type: library
+version: 0.1.0

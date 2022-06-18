@@ -1,0 +1,2 @@
+orderedList:
+  {{- include "example.quicksort" .Values.unorderedList | nindent 2 }}
