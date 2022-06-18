@@ -25,8 +25,5 @@
     {{- $orderedList = concat $left (list $pivot) $right -}}
   {{- end -}}
 
-{{ range $orderedList -}}
-- {{ toYaml . }}
-{{ end -}}
-
+  {{- toYaml $orderedList }}
 {{- end -}}
