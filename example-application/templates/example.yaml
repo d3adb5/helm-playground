@@ -1,2 +1,4 @@
-orderedList:
+quicksortOrdered:
   {{- include "example.quicksort" .Values.unorderedList | nindent 2 }}
+mergeSortOrdered:
+  {{- include "example.mergesort" .Values.unorderedList | nindent 2 }}
