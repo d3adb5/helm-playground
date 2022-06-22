@@ -79,6 +79,77 @@ In taking a page from Oracle's book on writing documentation that is totally up
 to date, I haven't tested this function, but from the looks of it it should
 work. You get the picture.
 
+You can also try and create equivalents to traditional functional glue:
+
+```yaml
+{{- define "compose" -}}
+  {{- $previousOutput := last . -}}
+  {{- range (initial .) -}}
+    {{- $previousOutput = include . $previousOutput | fromYaml -}}
+  {{- end -}}
+  {{- toYaml $previousOutput -}}
+{{- end -}}
+```
+
+The pseudo-function above can compose pseudo-functions that output YAML objects
+/ dicts. It won't work for functions that output lists since you would need
+`fromYamlArray` for those. Example usage:
+
+```yaml
+# composedValue = funcC( funcB( funcA( .Values.firstInput ) ) )
+composedValue: {{ include "compose" (list "funcA" "funcB" "funcC" .Values.firstInput }}
+```
+
+This is a way to map a pseudo-function over a list:
+
+```yaml
+{{- define "map" -}}
+  {{- $function := index . 0 -}}
+  {{- $results := list -}}
+  {{- range (index . 1) -}}
+    {{- $results = include $function . | fromYaml | append $results -}}
+  {{- end -}}
+  {{- toYaml $results -}}
+{{- end -}}
+```
+
+This is a way to replicate the OOP "builder" pattern:
+
+```yaml
+{{- define "build" -}}
+  {{- $previousOutput := first . -}}
+  {{- range (rest .) -}}
+    {{- $template := index . 0 -}}
+    {{- $firstArg := index . 1 -}}
+    {{- $previousOutput = include $template (list $firstArg $previousOutput) | fromYaml -}}
+  {{- end -}}
+  {{- toYaml $previousOutput -}}
+{{- end -}}
+
+{{- define "withUsername" -}}
+  {{- set (index . 1) "username" (index . 0) | toYaml -}}
+{{- end -}}
+
+{{- define "withPassword" -}}
+  {{- set (index . 1) "password" (index . 0) | toYaml -}}
+{{- end -}}
+
+# credentials = new Credentials(.Values.credentials)
+#                 .withUsername("admin')
+#                 .withPassword("admin');
+
+credentials: {{
+  include "build" (list
+    .Values.credentials
+    (list "withUsername" "admin")
+    (list "withPassword" "admin")
+  )
+}}
+```
+
+But please don't do it. This is just for fun. Just set your values like a
+normal person would, okay?
+
 ## Sorting
 
 You'll see in this repository implementations for the quick sort and merge sort
