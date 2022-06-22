@@ -1,4 +1,19 @@
 quicksortOrdered:
-  {{- include "example.quicksort" .Values.unorderedList | nindent 2 }}
+  {{- include "example.quicksort" (list .Values.unorderedList "example.compare.default") | nindent 2 }}
+quicksortReverse:
+  {{- include "example.quicksort" (list .Values.unorderedList "reverse") | nindent 2 }}
+
 mergeSortOrdered:
-  {{- include "example.mergesort" .Values.unorderedList | nindent 2 }}
+  {{- include "example.mergesort" (list .Values.unorderedList "example.compare.default") | nindent 2 }}
+mergeSortReverse:
+  {{- include "example.mergesort" (list .Values.unorderedList "reverse") | nindent 2 }}
+
+{{- define "reverse" -}}
+  {{- if lt (index . 0) (index . 1) -}}
+    {{- printf "GT" -}}
+  {{- else if eq (index . 0) (index . 1) -}}
+    {{- printf "EQ" -}}
+  {{- else -}}
+    {{- printf "LT" -}}
+  {{- end -}}
+{{- end -}}

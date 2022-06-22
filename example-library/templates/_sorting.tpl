@@ -1,10 +1,21 @@
 {{/* Attempts at sorting lists directly through Helm! */}}
 
+{{- define "example.compare.default" -}}
+  {{- if lt (index . 0) (index . 1) -}}
+    {{- printf "LT" -}}
+  {{- else if eq (index . 0) (index . 1) -}}
+    {{- printf "EQ" -}}
+  {{- else -}}
+    {{- printf "GT" -}}
+  {{- end -}}
+{{- end -}}
+
 {{- define "example.quicksort" -}}
-  {{- $unorderedList := . -}}
+  {{- $unorderedList := index . 0 -}}
+  {{- $comparePartial := index . 1 -}}
   {{- $orderedList := list -}}
 
-  {{- if lt (len .) 2 -}}
+  {{- if lt (len $unorderedList) 2 -}}
     {{- $orderedList = $unorderedList -}}
   {{- else -}}
     {{- $pivot := first $unorderedList -}}
@@ -13,15 +24,15 @@
     {{- $right := list -}}
 
     {{- range $rest -}}
-      {{- if lt . $pivot -}}
+      {{- if include $comparePartial (list . $pivot) | eq "LT" -}}
         {{- $left = append $left . -}}
       {{- else -}}
         {{- $right = append $right . -}}
       {{- end -}}
     {{- end -}}
 
-    {{- $left = include "example.quicksort" $left | fromYamlArray | default list -}}
-    {{- $right = include "example.quicksort" $right | fromYamlArray | default list -}}
+    {{- $left = include "example.quicksort" (list $left $comparePartial) | fromYamlArray -}}
+    {{- $right = include "example.quicksort" (list $right $comparePartial) | fromYamlArray -}}
     {{- $orderedList = concat $left (list $pivot) $right -}}
   {{- end -}}
 
@@ -31,6 +42,7 @@
 {{- define "example.mergesort.merge" -}}
   {{- $firstList  := index . 0 -}}
   {{- $secondList := index . 1 -}}
+  {{- $comparePartial := index . 2 -}}
   {{- $mergedList := list -}}
 
   {{- /* Used to control what to do when we have exhausted a list. */ -}}
@@ -45,7 +57,7 @@
     {{- else -}}
       {{- $firstElement  := first $firstList -}}
       {{- $secondElement := first $secondList -}}
-      {{- if le $firstElement $secondElement -}}
+      {{- if include $comparePartial (list $firstElement $secondElement) | eq "LT" -}}
         {{- $mergedList = append $mergedList $firstElement -}}
         {{- $firstList = rest $firstList -}}
       {{- else -}}
@@ -59,7 +71,8 @@
 {{- end -}}
 
 {{- define "example.mergesort" -}}
-  {{- $unorderedList := . -}}
+  {{- $unorderedList := index . 0 -}}
+  {{- $comparePartial := index . 1 -}}
   {{- $orderedList := list -}}
 
   {{- if lt (len $unorderedList) 2 -}}
@@ -69,9 +82,9 @@
     {{- $firstHalf := slice $unorderedList 0 $middleIndex -}}
     {{- $secondHalf := slice $unorderedList $middleIndex -}}
 
-    {{- $firstSorted := include "example.mergesort" $firstHalf | fromYamlArray -}}
-    {{- $secondSorted := include "example.mergesort" $secondHalf | fromYamlArray -}}
-    {{- $orderedList = include "example.mergesort.merge" (list $firstSorted $secondSorted) | fromYamlArray -}}
+    {{- $firstSorted := include "example.mergesort" (list $firstHalf $comparePartial) | fromYamlArray -}}
+    {{- $secondSorted := include "example.mergesort" (list $secondHalf $comparePartial) | fromYamlArray -}}
+    {{- $orderedList = include "example.mergesort.merge" (list $firstSorted $secondSorted $comparePartial) | fromYamlArray -}}
   {{- end -}}
 
   {{- toYaml $orderedList }}
