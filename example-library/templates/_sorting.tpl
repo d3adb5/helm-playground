@@ -10,7 +10,7 @@
   {{- end -}}
 {{- end -}}
 
-{{- define "example.quicksort" -}}
+{{- define "example.quicksort.gen" -}}
   {{- $unorderedList := index . 0 -}}
   {{- $comparePartial := index . 1 -}}
   {{- $orderedList := list -}}
@@ -31,8 +31,8 @@
       {{- end -}}
     {{- end -}}
 
-    {{- $left = include "example.quicksort" (list $left $comparePartial) | fromYamlArray -}}
-    {{- $right = include "example.quicksort" (list $right $comparePartial) | fromYamlArray -}}
+    {{- $left = include "example.quicksort.gen" (list $left $comparePartial) | fromYamlArray -}}
+    {{- $right = include "example.quicksort.gen" (list $right $comparePartial) | fromYamlArray -}}
     {{- $orderedList = concat $left (list $pivot) $right -}}
   {{- end -}}
 
@@ -70,7 +70,7 @@
   {{- toYaml $mergedList }}
 {{- end -}}
 
-{{- define "example.mergesort" -}}
+{{- define "example.mergesort.gen" -}}
   {{- $unorderedList := index . 0 -}}
   {{- $comparePartial := index . 1 -}}
   {{- $orderedList := list -}}
@@ -82,10 +82,23 @@
     {{- $firstHalf := slice $unorderedList 0 $middleIndex -}}
     {{- $secondHalf := slice $unorderedList $middleIndex -}}
 
-    {{- $firstSorted := include "example.mergesort" (list $firstHalf $comparePartial) | fromYamlArray -}}
-    {{- $secondSorted := include "example.mergesort" (list $secondHalf $comparePartial) | fromYamlArray -}}
+    {{- $firstSorted := include "example.mergesort.gen" (list $firstHalf $comparePartial) | fromYamlArray -}}
+    {{- $secondSorted := include "example.mergesort.gen" (list $secondHalf $comparePartial) | fromYamlArray -}}
     {{- $orderedList = include "example.mergesort.merge" (list $firstSorted $secondSorted $comparePartial) | fromYamlArray -}}
   {{- end -}}
 
   {{- toYaml $orderedList }}
+{{- end -}}
+
+{{/*
+  These functions just invoke the "general" sorting functions with the default
+  comparison function, which uses Helm's "lt".
+*/}}
+
+{{- define "example.quicksort" -}}
+  {{- include "example.quicksort.gen" (list . "example.compare.default") -}}
+{{- end -}}
+
+{{- define "example.mergesort" -}}
+  {{- include "example.mergesort.gen" (list . "example.compare.default") -}}
 {{- end -}}
