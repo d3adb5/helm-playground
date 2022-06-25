@@ -18,5 +18,4 @@ jobs:
       - name: Run unit tests
         uses: d3adb5/helm-unittest-action@test
         with:
-          helm3: false
-          charts: example-application
+          charts: example-application example-library
