@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  pull_request: {}
+  push:
+    branches: [ master ]
+
+jobs:
+  unittest:
+    name: Helm Unit Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout files in the repository
+        uses: actions/checkout@v3
+
+      - name: Run unit tests
+        uses: d3adb5/helm-unittest-action@master
