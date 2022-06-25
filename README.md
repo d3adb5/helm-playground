@@ -4,6 +4,21 @@ This repository shall contain whatever interesting thing jumps out at me when
 I'm handling Helm charts here and there. It has no main focus or intent, so
 don't call this a project.
 
+# Unit Testing
+
+Unit testing for Helm templates will be included here since every testing that
+can be implemented is worth mentioning, even if it ends up being stupid simple,
+as it opens doors to more useful testing.
+
+The testing "library" that is used here is [quintush/helm-unittest][quintush].
+You can install it with the following command:
+
+```sh
+helm plugin install https://github.com/quintush/helm-unittest
+```
+
+[quintush]: https://github.com/quintush/helm-unittest
+
 # Partial templates as functions
 
 This understanding might apply to Go's template packages overall, but since this
