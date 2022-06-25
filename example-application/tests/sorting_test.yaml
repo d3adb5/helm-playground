@@ -1,0 +1,54 @@
+suite: Sorting Functions
+
+templates:
+  - sorting.yaml
+
+fixtures:
+  shuffledNumbers: &shuffledNumbers
+    [ 2, 3, 8, 5, 10, 6, 7, 9, 1, 4 ]
+  sortedNumbers: &sortedNumbers
+    [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+  rsortedNumbers: &rsortedNumbers
+    [ 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 ]
+
+  shuffledStrings: &shuffledStrings
+    [ potato, jockey, plusle, carrot, banana, shirts, jumper, whisky ]
+  sortedStrings: &sortedStrings
+    [ banana, carrot, jockey, jumper, plusle, potato, shirts, whisky ]
+  rsortedStrings: &rsortedStrings
+    [ whisky, shirts, potato, plusle, jumper, jockey, carrot, banana ]
+
+tests:
+  - it: sorting functions can sort a list of numbers
+    set:
+      unorderedList: *shuffledNumbers
+    asserts:
+      - equal:
+          path: quicksortOrdered
+          value: *sortedNumbers
+      - equal:
+          path: quicksortReverse
+          value: *rsortedNumbers
+      - equal:
+          path: mergesortOrdered
+          value: *sortedNumbers
+      - equal:
+          path: mergesortReverse
+          value: *rsortedNumbers
+
+  - it: sorting functions can sort a list of strings
+    set:
+      unorderedList: *shuffledStrings
+    asserts:
+      - equal:
+          path: quicksortOrdered
+          value: *sortedStrings
+      - equal:
+          path: quicksortReverse
+          value: *rsortedStrings
+      - equal:
+          path: mergesortOrdered
+          value: *sortedStrings
+      - equal:
+          path: mergesortReverse
+          value: *rsortedStrings

@@ -3,9 +3,9 @@ quicksortOrdered:
 quicksortReverse:
   {{- include "example.quicksort.gen" (list .Values.unorderedList "reverse") | nindent 2 }}
 
-mergeSortOrdered:
+mergesortOrdered:
   {{- include "example.mergesort" .Values.unorderedList | nindent 2 }}
-mergeSortReverse:
+mergesortReverse:
   {{- include "example.mergesort.gen" (list .Values.unorderedList "reverse") | nindent 2 }}
 
 {{- define "reverse" -}}
