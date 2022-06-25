@@ -1,0 +1,13 @@
+suite: Type Conversion
+
+templates:
+  - conversion.yaml
+
+tests:
+  - it: letter characters are converted properly
+    set:
+      character: 45
+    asserts:
+      - equal:
+          path: convertedNumber
+          value: "-"

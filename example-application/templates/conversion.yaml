@@ -1,0 +1,1 @@
+convertedNumber: {{ include "example.char" .Values.character | quote }}
