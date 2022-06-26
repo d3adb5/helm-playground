@@ -1,3 +1,15 @@
 convertedNumber: {{ include "example.char" .Values.character | quote }}
 convertedString: {{ include "example.list-to-str" .Values.listOfChars }}
 convertedCharacter: {{ include "example.ord" .Values.characterToConvert }}
+listOfInts: {{ include "example.str-to-list" .Values.stringToConvert | nindent 2 }}
+
+inAndOut: {{
+  include "example.list-to-str"
+    (include "example.str-to-list" .Values.stringToConvert | fromYamlArray)
+}}
+
+outAndIn: {{
+  include "example.str-to-list"
+    (include "example.list-to-str" .Values.listOfChars | trimAll "\"")
+  | nindent 2
+}}

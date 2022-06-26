@@ -1,6 +1,7 @@
 character: 48
 listOfChars: [ 32, 32, 32 ]
 characterToConvert: "a"
+stringToConvert: "hello world"
 unorderedList:
 - 43
 - 57

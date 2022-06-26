@@ -44,3 +44,11 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
+
+{{- define "example.str-to-list" -}}
+  {{- $finalList := list -}}
+  {{- range splitList "" . -}}
+    {{- $finalList = append $finalList (include "example.ord" . | int) -}}
+  {{- end -}}
+  {{- toYaml $finalList -}}
+{{- end -}}

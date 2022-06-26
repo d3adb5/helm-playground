@@ -27,3 +27,27 @@ tests:
       - equal:
           path: convertedCharacter
           value: 97
+
+  - it: strings are converted to lists of numbers easily
+    set:
+      stringToConvert: "Hello world!"
+    asserts:
+      - equal:
+          path: listOfInts
+          value: [ 72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100, 33 ]
+
+  - it: list-to-str inverts str-to-list
+    set:
+      stringToConvert: "Hello world!"
+    asserts:
+      - equal:
+          path: inAndOut
+          value: "Hello world!"
+
+  - it: str-to-list inverts list-to-str
+    set:
+      listOfChars: [ 72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100, 33 ]
+    asserts:
+      - equal:
+          path: outAndIn
+          value: [ 72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100, 33 ]
