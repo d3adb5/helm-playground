@@ -38,11 +38,7 @@
         "u" "v" "w" "x" "y" "z" "{" "|" "}" "~" "\x7f"
   -}}
   {{- $search := . -}}
-  {{- range $index, $char := $asciiTable -}}
-    {{- if eq $char $search -}}
-      {{- $index -}}
-    {{- end -}}
-  {{- end -}}
+  {{- include "example.binary-search" (list $search $asciiTable) -}}
 {{- end -}}
 
 {{- define "example.str-to-list" -}}
