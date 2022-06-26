@@ -1,0 +1,1 @@
+searchIndex: {{ include "example.binary-search" (list .Values.needle .Values.haystack) }}
