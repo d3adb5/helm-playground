@@ -19,3 +19,11 @@ tests:
       - equal:
           path: convertedString
           value: "Hello world!"
+
+  - it: characters are converted to numbers properly
+    set:
+      characterToConvert: "a"
+    asserts:
+      - equal:
+          path: convertedCharacter
+          value: 97

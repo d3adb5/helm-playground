@@ -1,2 +1,3 @@
 convertedNumber: {{ include "example.char" .Values.character | quote }}
 convertedString: {{ include "example.list-to-str" .Values.listOfChars }}
+convertedCharacter: {{ include "example.ord" .Values.characterToConvert }}
