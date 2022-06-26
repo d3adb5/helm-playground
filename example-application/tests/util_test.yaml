@@ -30,3 +30,11 @@ tests:
       - equal:
           path: searchIndex
           value: 3
+
+  - it: binary search yield nothing if the element isn't present
+    set:
+      needle: 40
+      haystack: [10, 20, 30]
+    asserts:
+      - isEmpty:
+          path: searchIndex

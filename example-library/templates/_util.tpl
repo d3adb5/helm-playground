@@ -21,9 +21,11 @@
       {{- $left := slice $hstack 0 $middle -}}
       {{- include "example.binary-search" (list $needle $left) -}}
     {{- else -}}
-      {{- $right := slice $hstack $middle -}}
-      {{- $offset := include "example.binary-search" (list $needle $right) | int -}}
-      {{- add $middle $offset -}}
+      {{- $right := slice $hstack (add1 $middle) -}}
+      {{- $offset := include "example.binary-search" (list $needle $right) -}}
+      {{- if empty $offset | not -}}
+        {{- add $middle (int $offset | add1) -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
