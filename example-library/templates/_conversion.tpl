@@ -14,3 +14,11 @@
   -}}
   {{- . | int | index $asciiTable | printf "%s" -}}
 {{- end -}}
+
+{{- define "example.list-to-str" -}}
+  {{- $finalString := "" -}}
+  {{- range . -}}
+    {{- $finalString = printf "%s%s" $finalString (include "example.char" .) -}}
+  {{- end -}}
+  {{- quote $finalString -}}
+{{- end -}}

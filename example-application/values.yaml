@@ -1,4 +1,5 @@
 character: 48
+listOfChars: [ 32, 32, 32 ]
 unorderedList:
 - 43
 - 57

@@ -11,3 +11,11 @@ tests:
       - equal:
           path: convertedNumber
           value: "-"
+
+  - it: list of numbers is converted to string easily
+    set:
+      listOfChars: [ 72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100, 33 ]
+    asserts:
+      - equal:
+          path: convertedString
+          value: "Hello world!"
