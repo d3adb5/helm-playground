@@ -1,0 +1,32 @@
+suite: Utility Functions
+
+templates:
+  - util.yaml
+
+tests:
+  - it: binary search arrives at the right index for last element
+    set:
+      needle: 90
+      haystack: [1, 5, 6, 12, 15, 20, 38, 49, 56, 78, 90]
+    asserts:
+      - equal:
+          path: searchIndex
+          value: 10
+
+  - it: binary search arrives at the right index for first element
+    set:
+      needle: 1
+      haystack: [1, 5, 6, 12, 15, 20, 38, 49, 56, 78, 90]
+    asserts:
+      - equal:
+          path: searchIndex
+          value: 0
+
+  - it: binary search arrives at the right index for random element
+    set:
+      needle: 12
+      haystack: [1, 5, 6, 12, 15, 20, 38, 49, 56, 78, 90]
+    asserts:
+      - equal:
+          path: searchIndex
+          value: 3
