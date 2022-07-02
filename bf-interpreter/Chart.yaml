@@ -1,0 +1,11 @@
+apiVersion: v2
+name: bf-interpreter
+description: A Brainfuck interpreter written as a Helm chart
+
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: example-library
+    version: 0.1.0
+    repository: file://../example-library

@@ -1,0 +1,9 @@
+machine:
+  program: "+++>++<->+"
+  pctr: 0
+
+  cells: [0]
+  cptr: 0
+
+  input: ""
+  output: ""
