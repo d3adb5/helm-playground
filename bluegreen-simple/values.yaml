@@ -1,0 +1,5 @@
+promote: false
+color: blue
+
+ingress:
+  host: lights.minikube.local

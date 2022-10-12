@@ -1,0 +1,36 @@
+{{- $stable  := include "bluegreen.stable"  . -}}
+{{- $preview := include "bluegreen.preview" . -}}
+
+{{- if .Values.promote -}}
+  {{- $stable = $preview -}}
+{{- end -}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ printf "%s-preview" .Release.Name }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    bluegreen: {{ $preview }}
+  ports:
+  - port: 80
+    targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ printf "%s-stable" .Release.Name }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    bluegreen: {{ $stable }}
+  ports:
+  - port: 80
+    targetPort: http
