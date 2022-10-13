@@ -1,0 +1,26 @@
+{{- define "example.service" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+  ports:
+  - port: 80
+    targetPort: http
+{{- end -}}
+
+{{- /* First we render the template into a variable. */ -}}
+{{- $mainService := include "example.service" . -}}
+
+{{- /*
+  And then we pass that rendered template so our stable and preview objects are
+  created. The original scope / context has to be passed to the partial
+  template, so we're giving it a list as a scope.
+*/ -}}
+
+{{- include "bluegreen.services" (list . $mainService) -}}
