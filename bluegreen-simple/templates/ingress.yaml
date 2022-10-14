@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-preview" .Release.Name }}
+spec:
+  tls:
+  - secretName: lights-simple-preview
+    hosts:
+    - {{ printf "preview.%s" .Values.ingress.host }}
+  rules:
+  - host: {{ printf "preview.%s" .Values.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}-preview
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-stable" .Release.Name }}
+spec:
+  tls:
+  - secretName: lights-simple-stable
+    hosts:
+    - {{ .Values.ingress.host }}
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}-stable
+            port:
+              number: 80

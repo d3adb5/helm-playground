@@ -1,0 +1,33 @@
+{{- define "example.ingress" -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  tls:
+  - secretName: lights-generic
+    hosts:
+    - {{ .Values.ingress.host }}
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}
+            port:
+              number: 80
+{{- end -}}
+
+{{- /* First we render the template into a variable. */ -}}
+{{- $mainIngress := include "example.ingress" . -}}
+
+{{- /*
+  And then we pass that rendered template so our stable and preview objects are
+  created. The original scope / context has to be passed to the partial
+  template, so we're giving it a list as a scope.
+*/ -}}
+
+{{- include "bluegreen.ingresses" (list . $mainIngress) -}}

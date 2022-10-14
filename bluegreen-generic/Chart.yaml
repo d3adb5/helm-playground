@@ -1,0 +1,6 @@
+apiVersion: v2
+name: bluegreen-generic
+description: A chart implementing the Blue/Green strategy in a more generic way
+
+type: application
+version: 0.1.0

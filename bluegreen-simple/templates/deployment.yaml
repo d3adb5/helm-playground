@@ -1,0 +1,34 @@
+{{- $stable  := include "bluegreen.stable"  . -}}
+{{- $preview := include "bluegreen.preview" . -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ $preview }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+      bluegreen: {{ $preview }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+        bluegreen: {{ $preview }}
+    spec:
+      containers:
+      - name: colors
+        image: argoproj/rollouts-demo:{{ .Values.color }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+
+{{- if not .Values.promote }}
+  {{- $production := printf "%s-%s" .Release.Name $stable | lookup "apps/v1" "Deployment" .Release.Namespace }}
+  {{- if $production }}
+---
+{{ toYaml $production }}
+  {{- end }}
+{{- end }}

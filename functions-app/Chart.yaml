@@ -1,11 +1,11 @@
 apiVersion: v2
-name: example-application
+name: functions-app
 description: An example Helm chart for some application
 
 type: application
 version: 0.1.0
 
 dependencies:
-  - name: example-library
+  - name: functions-lib
     version: 0.1.0
-    repository: file://../example-library
+    repository: file://../functions-lib
