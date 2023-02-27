@@ -1,3 +1,11 @@
+# Moved to another repository!
+
+This repository is no longer maintained. It will stay here for archival and
+should anybody still find use for the files here, but Helm chart play will take
+place in the new repository, [devops-playground][devops-playground].
+
+[devops-playground]: https://github.com/d3adb5/devops-playground
+
 # Helm Charts Playground
 
 This repository shall contain whatever interesting thing jumps out at me when
